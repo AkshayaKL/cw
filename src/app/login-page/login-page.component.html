@@ -1,0 +1,95 @@
+
+<div class="container scrollsection" >
+<div *ngIf="userexists==true"><div class="alert alert-danger"> User Name already exists</div></div>
+<div *ngIf="userexists==false"><div class="alert alert-success">Registered</div></div>
+<form name="form" #form="ngForm" (ngSubmit)="submitlogin(form.value)" id="loginform">
+<label class="form-group" style="color:lightgrey">Upload your profile picture below</label>
+<input type="file" class="btn btn-default"><br/>
+
+
+<div class ="row form-group">
+<div class ="col-sm-6 form-group"><input type="text" class="form-control" placeholder="Name" [(ngModel)]="user.name" name="name" #name="ngModel" required minlength="7"> </div><br class="rwd-break">
+<div class ="col-sm-6 form-group"><input type="email" class="form-control" placeholder="Email ID" [(ngModel)]="user.email" name="email" #email="ngModel"  email> </div>
+</div>
+<br />
+<div class ="row form-group">
+<div class ="col-sm-6 form-group"><input type="text" class="form-control" placeholder="Employee ID" [(ngModel)]="user.eid" name="eid" #eid="ngModel" required> </div><br class="rwd-break">
+<div class ="col-sm-6 form-group"><input type="number" class="form-control" placeholder="Phone number" [(ngModel)]="user.phone" name="phone" #phone="ngModel" required minlength="10" maxlength="10" > </div>
+</div>
+<br/>
+<div class ="row form-group">
+<div class ="col-sm-6 form-group"><input type="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" name="password" #password="ngModel" required minlength="7"> </div><br class="rwd-break">
+<div class ="col-sm-6 form-group"><input type="password" class="form-control" placeholder="Confirm Password" [(ngModel)]="user.confirmpassword" name="confirmpassword" #confirmpassword="ngModel" required minlength="7"> </div>
+</div>
+  
+                <br/><br/>
+
+
+
+
+
+
+<div *ngIf="(name.valid)&&(email.valid)&&(password.valid)&&(phone.valid)&&(password.value==confirmpassword.value)">
+<button type="submit" class="btn btn-default" form="loginform">Submit</button>
+</div>
+<div *ngIf="!((name.valid)&&(email.valid)&&(password.valid)&&(phone.valid)&&(password.value==confirmpassword.value))">
+<button type="submit" class="btn btn-default" disabled form="loginform">Submit</button>
+
+</div>
+   
+
+
+
+</form>
+
+
+
+<br/>
+<div class=scrollable >
+<div *ngIf="name.invalid&&(name.dirty||name.touched)" class="alert alert-danger">
+<div *ngIf="name.errors.required">
+Name is required
+</div>			
+<div *ngIf="name.errors.minlength">
+Name should be atleast 7 characters long
+</div>
+</div>
+<div *ngIf = "email.invalid&&(email.dirty||email.touched)" class="alert alert-danger">
+<div *ngIf="email.errors.email">
+Provide a valid email ID
+</div>
+<div *ngIf="email.errors.required">
+Email ID is mandatory
+</div>
+
+</div>
+<div *ngIf = "phone.invalid&&(phone.dirty||phone.touched)" class="alert alert-danger">
+<div *ngIf="phone.errors.required">
+Phone number is mandatory
+</div>
+<div *ngIf="phone.errors.minlength">
+Provide a valid phone number
+</div>
+<div *ngIf="phone.errors.maxlength">
+Provide a valid phone number
+</div>
+</div>
+<div *ngIf = "(password.dirty||password.touched)">
+<div *ngIf ="password.invalid">
+<div *ngIf="password.errors.required" class="alert alert-danger">
+Please type your password and stay protected
+</div>
+<div *ngIf="password.errors.minlength" class="alert alert-danger">
+Your password must be atleast 7 characters long
+</div>
+</div>
+<div *ngIf="(confirmpassword.dirty||confirmpassword.touched)">
+<div *ngIf="(password.value!=confirmpassword.value)" class="alert alert-danger">
+Passwords don't match
+</div>
+
+</div>
+</div>
+
+
+

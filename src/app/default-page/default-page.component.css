@@ -1,0 +1,84 @@
+
+
+.search
+{
+	text-align:center;
+    width:100vw;
+    
+    }
+
+
+.scrolling
+{
+	overflow:auto;
+	 white-space: nowrap;
+	
+}
+a
+{
+	 display:inline-block;
+	 text-align: center;
+     padding: 14px;
+     text-decoration: none;
+     width:200px;
+}
+.courses-on-board
+{   margin-left: 50px;
+	background-color: "#ae285d";
+    
+    border-color:grey;
+    border-right-style:hidden;
+    border-left-style:hidden;
+    color:grey;
+
+}
+a img
+{
+	width:100%;
+}
+a:hover
+{
+	background-color: grey;
+}
+.new-courses
+{   margin-left: 50px;
+	background-color: "#ae285d";
+    border-style:outset;
+    border-color:grey;
+    border-right-style:hidden;
+    border-left-style:hidden;
+    color:grey;
+}
+
+@media screen and (max-width: 768px)
+{
+    .new-courses
+    {
+        margin-left:0px;
+    }
+   .courses-on-board
+   {
+    margin-left: 0px;
+   }
+
+
+    }
+
+@media screen and (min-width:768px)
+{
+
+.searchbar
+{   position:relative;
+    width:70vw;
+    top:20vh;
+}
+
+.searchbar1
+{
+    width:100%;
+}
+.search
+{
+    height:40vh;
+}
+}
