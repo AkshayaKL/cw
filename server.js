@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 // Get our API routes
 const api = require('./server/routes/api');
+const admin = require('./server/routes/admin');
 
 const app = express();
 
@@ -24,7 +25,6 @@ app.use(express.static(path.join(__dirname, 'dist/cw')));
 
 // Set our api routes
 app.use('/api', api);
-
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/cw/index.html'));

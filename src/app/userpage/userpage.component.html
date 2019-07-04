@@ -1,6 +1,8 @@
 <div class="jumbotron" *ngIf=userdetails1>
 <p>Welcome {{userdetails1.name}}</p>
+<app-user-calendar [userdetails1]="userdetails1"></app-user-calendar>
 </div>
+
 <div class = "jumbotron" *ngIf=!(userdetails1)>
 <p>Please sign In</p>
 <a routerLink="/signin"><button type="button" class="btn btn-def ">SIGN IN</button></a>

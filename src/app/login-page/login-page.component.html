@@ -1,5 +1,6 @@
 
 <div class="container scrollsection" >
+
 <div *ngIf="userexists==true"><div class="alert alert-danger"> User Name already exists</div></div>
 <div *ngIf="userexists==false"><div class="alert alert-success">Registered</div></div>
 <form name="form" #form="ngForm" (ngSubmit)="submitlogin(form.value)" id="loginform">

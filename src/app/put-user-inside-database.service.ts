@@ -3,6 +3,7 @@ import {user} from './userinfo';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import { RouterModule, Routes, Router } from '@angular/router';
+import {map, tap} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,17 +15,14 @@ export class PutUserInsideDatabaseService {
 newuser:user;
 existence:boolean;
 
-setUser(val:user):void{
-	 
+
+
+
+
+
+setUser(val:user):Observable<boolean> {
     this.newuser=val;
-    this.pushuser();     
-
-}
-
-
-
-
-pushuser() {
+     
     const headers = new HttpHeaders()
           .set('Authorization', 'my-auth-token')
           .set('Content-Type', 'application/json');
@@ -42,7 +40,9 @@ pushuser() {
       {
       this.existence=false;
       }
+
     });
+    return of(this.existence);
   }
 
   

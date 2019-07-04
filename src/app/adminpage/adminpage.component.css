@@ -1,0 +1,9 @@
+.container
+{
+	min-height: 70vh;
+	text-align: center;
+	position:relative;
+	padding-top: 30vh;
+	background-color: #ebccd1;
+	font-weight: bold;
+ }

@@ -3,6 +3,7 @@ import {user} from '../userinfo';
 import {FormGroup,FormBuilder, FormControl} from '@angular/forms';
 import { PutUserInsideDatabaseService } from '../put-user-inside-database.service';
 import { RouterModule, Routes, Router } from '@angular/router';
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -33,13 +34,22 @@ user:user={
 submitlogin(value:any):void{
 
   
-  this.putuser.setUser(this.user);
-  this.userexists = this.putuser.existence;
+  this.putuser.setUser(this.user)
+   .subscribe(
+
+   existence=>this.userexists=existence
   
-  console.log(this.userexists);
+   
+   );
   
-    
+  
+
   }
+
+  
+  
+  
+  
 
 
 

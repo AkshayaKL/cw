@@ -1,0 +1,157 @@
+<div *ngIf="events.length">
+<div class="row text-center">
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div
+        class="btn btn-primary"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
+      >
+        Previous
+      </div>
+      <div
+        class="btn btn-outline-secondary"
+        mwlCalendarToday
+        [(viewDate)]="viewDate"
+      >
+        Current
+      </div>
+      <div
+        class="btn btn-primary"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
+      >
+        Next
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+  </div>
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Month)"
+        [class.active]="view === CalendarView.Month"
+      >
+        Month
+      </div>
+     
+      
+    </div>
+  </div>
+</div>
+<br />
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="CalendarView.Month"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    [activeDayIsOpen]="activeDayIsOpen"
+    (dayClicked)="dayClicked($event.day)"
+    (eventClicked)="handleEvent('Clicked', $event.event)"
+    (eventTimesChanged)="eventTimesChanged($event)"
+  >
+  </mwl-calendar-month-view>
+ 
+</div>
+
+
+
+<br /><br /><br />
+
+<h3>
+  Events
+  <div class="clearfix"></div>
+</h3>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-dark">
+    <thead>
+      <tr>
+        <th>Title</th>
+     
+        <th>Starts at</th>
+        <th>Ends at</th>
+        <th>Enrollment</th>
+        </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td [ngStyle]="{'background-color':event.color.secondary,'color':event.color.primary}">
+         {{event.title}}
+        </td>
+          <td>        
+         {{event.start|date:'short'}}
+        </td>
+        <td>
+       {{event.end|date:'short'}}
+        </td>
+        <td>
+       <button *ngIf=event.enrolled class="btn btn-success" disabled="true">Enrolled </button>
+       <button *ngIf=!(event.enrolled) class="btn btn-success" (click)="enroll($event,event)">Enroll now</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template *ngIf=modalContent let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Event action occurred</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      Action:
+      <pre>{{ modalData?.action }}</pre>
+    </div>
+    <div>
+      Event:
+      <pre>{{ modalData?.event | json }}</pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      OK
+    </button>
+  </div>
+</ng-template>
+</div>
+
+  <button type="button" class="btn btn-primary" (click)="displayfeedback($event)">
+    Provide Feedback for a better experience </button>
+  <div *ngIf="displayfback==1">
+  <table class="table table-bordered table-striped table-dark" >
+  <thead>
+  <tr>
+  <th>Course Name</th>
+  <th>Feedback</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let element of allenrollmentdetail" >
+    <td *ngIf="element.Name===userdetails1.name">
+      {{element.Course}}
+    </td>
+    <td *ngIf="element.Name===userdetails1.name">
+    
+    <textarea  rows="3" name ="feedback" style="width:100%;border-radius:10px" [(ngModel)]="element.Feedback">{{element.Feedback}}</textarea>
+    <button type="button" class="btn btn-success" (click)="submitfeedback(element)">Submit Feedback</button>
+    
+    </td>
+  
+  </tr>
+
+  </tbody>
+  </table>
+  </div>
+
