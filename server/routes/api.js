@@ -30,7 +30,13 @@ router.all("/*", function(req, res, next){
 
 // declare axios for making http requests
 const assert =  require('assert');
- mongoose.connect("mongodb://localhost:27017/users", { useNewUrlParser: true });
+ mongoose.connect("mongodb://localhost:27017/users", { useNewUrlParser: true },function(err){
+
+  if(err)
+  {
+    throw err;
+  }
+ });
  const conn = mongoose.connection;
  conn.on('error', function(error){console.log("error");});
  conn.once('open', function() {
@@ -99,7 +105,7 @@ const assert =  require('assert');
     Price_Optimisation: Boolean,
     R: Boolean,
     SAS: Boolean
-   });
+   },{collection:"userdetails"});
 
    var EnrollmentDetailSchema = new mongoose.Schema({
     Name:String,
@@ -125,6 +131,33 @@ const assert =  require('assert');
 
 
             var admininsert = mongoose.model('admininsert',adminSchema);
+
+
+            router.post('/markpresence',function(req,res){
+                                     var userat = req.body
+                                     userdetails.findById(userat._id, function(err,userattendanceindb)
+                                     {
+                                             userattendanceindb = userat;
+                                             userdetail.save(function(err)
+                                             {
+                                                      if(err)
+                                                      {
+
+                                                        res.send({"message":"no"});
+                                                        throw err;
+
+                                                      }
+                                                      else
+                                                      {
+                                                        res.send({"message":"yes"});
+                                                      }
+                                             })
+                                     })
+
+
+                                      console.log(req.body);
+                                      
+                                                            });
 
             router.post('/getadmin', (req,res)=>{
              
@@ -170,8 +203,11 @@ router.post('/putenrollmentdetails',function(req,res){
   newdetail.Feedback = "";
   newdetail.save();
   res.send({"message":"Enrolled"});
-})  
+});  
   
+
+
+
 
 router.post('/postposters', upload.single('file'), function(req,res){
   console.log(JSON.stringify(req.file));
@@ -246,7 +282,7 @@ router.post('/checkenrollment',function(req,res)
 
    router.post('/getusers', (req,res)=>{
            
-   userinsert.find(function(err,docs){
+   userdetails.find(function(err,docs){
     if(err)
     {
       console.log(err);

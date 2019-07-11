@@ -1,8 +1,20 @@
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+<div class="poster-display" *ngIf="url">
+	<img [src]="url" class="poster"/>
+</div>
+
+
 <div class="form-content">
+
+
+
+
 <form [formGroup]="uploadForm" (ngSubmit)="OnSubmit()" class="uploadform">
- <div style="display:inline-block;">
-   <input type="file" name="poster" (change)="OnFileChange($event)"/><input type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}"/>
-  </div> 
-<button type="submit" class="btn btn-default">Upload</button>
+ <div style="display:inline-block;text-align: center">
+
+   <div style="text-align:center"><input type="file" style="display: inline-block;position: relative;left:40px" name="poster" class="inputimage"  (change)="OnFileChange($event)"/></div><br/><input type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" placeholder="Name for Storage" /><br/><br/>
+
+  </div> <br/><br/>
+<button type="submit" class="btn btn-primary" style="display: inline-block">Upload</button>
 </form>
 </div>

@@ -1,4 +1,4 @@
-
+  <div class="body" style="text-align: center;position:relative;top:10vh">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
   <div *ngIf="!dataofadmin" class="container">
   	
@@ -23,21 +23,58 @@
 
 
   </div>
-  <div *ngIf="dataofadmin" style="height:70vh"><div class="text-info">{{dataofadmin.adminid}}</div>
-  <div>
-  <a><pre> <button type="button" class="btn btn-default" (click)="submit($event)"><span class="glyphicon glyphicon-user"></span>Display users</button></pre></a>
+  <ul class="nav navbar-nav" style="float:right;">
+   
+
+      <li routerLinkActive="active"><a routerLink="" ><span class="glyphicon glyphicon-plus"></span>User</a></li>
+      <li routerLinkActive="active"><a routerLink="" ><span class="glyphicon glyphicon-edit"></span>User Details</a></li>
+  
+  </ul>
+  <br/>
+  <br/>
+  <br/>
+    
+  <div *ngIf="displaycalendar==1"> <!--displayed only when the user clicks on display calendar button-->
+   <button type="button" class="btn btn-default" style="float:right;" (click)="hidecalendar()">
+                <span class="glyphicon glyphicon-remove" ></span><span >Close</span></button>
+                <calendar></calendar>  <!--child component- calendar included -->
   </div>
 
+  <div *ngIf="dataofadmin && (displaycalendar!=1)" style="height:70vh"><!--This is displayed only if the admin is signed in -->
+       <form class="search form-inline ">
+          <section class="filter-wrapper" >
+              <div class="keyword-wrapper">
+                    <input type="text" style="border-radius: 10px;" id="keyword" [formControl]="queryField" placeholder="Search for users.." (focus)="displaymatch()"  (focusout)="hidematch()"/>
+              </div>
+                       <div *ngIf="results">
+                             <ul class="filter-select " *ngIf="displaymenu==1" (focus)="displaymatch()" >
+                                    <li class="filter-select-list" *ngFor="let result of results" (click)="showuser(result)" >{{result.Name}}</li>
+                                    <span class="tags"></span>
+                              </ul>
+                       </div>
+          </section>
 
-<div class="list-group">
+       </form>
+  <div>
+  <br/>
+
+  <div class="menu"><!--The meny containing option to display users/calendar -->
+       <a>
+             <button type="button" class="btn btn-default" (click)="submit($event)">
+                      <span class="glyphicon glyphicon-user"></span>Display users
+             </button>
+       </a>
+       <br/>
+ 
    
-    <a target="_blank" href="calendar" class="list-group-item list-group-item-action">
-        <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-calendar"></span>Display Calendar </button>
-    </a>
-    </div>
-</div>
-
+        <a>
+             <button type="button" class="btn btn-default" (click)="displaycalendar1($event)">
+              <span class="glyphicon glyphicon-calendar"></span>Display Calendar 
+              </button>
+        </a>
     
+</div>
+   
 
 
 
@@ -52,34 +89,89 @@
 
 
 
-<!--<ng-container *ngIf="dataofsignedinusers.length">
-<table class="table">
+<ng-container *ngIf="dataofsignedinusers.length&&(displaydetails==0)&&(displayusers==1)" class="usertable" >
+<table class="table table-bordered">
     <thead>
        <tr>
-       <th scope = "col">Index</th>
+       <th scope = "col">Employee Number</th>
        <th scope = "col">Name</th>
-       <th scope = "col">Employee ID </th>
-       <th scope = "col">E-mail ID </th>
-       </tr>
+       <th scope = "col">Joining Date </th>
+       <th scope = "col">Ageing </th>
+        <th scope = "col">Head</th> 
+        <th scope = "col">Supervisor Name </th> 
+        <th scope = "col">Location</th>
+        <th scope="col">Mark attendance</th>
+         </tr>
 
     </thead>
 
      <tbody>
-      <tr *ngFor= "let doc of dataofsignedinusers;let i=index">
+    <tr *ngFor= "let doc of dataofsignedinusers;let i=index">
       
-         <th scope="row">{{i+1}}</th>
-         <td>{{doc.name}}</td>
-          <td>{{doc.eid}}</td>
-          <td>{{doc.email}}</td>
-        
-      </tr>
+     
+         <td>{{doc.EmpNo}}</td>
+          <td>{{doc.Name}}</td>
+          <td>{{doc.Joining_Date|date}}</td>
+          <td>{{doc.Ageing}}</td>
+          <td>{{doc.Head}}</td>
+          <td>{{doc.Supervisor_Name}}</td>
+          <td>{{doc.Location}}</td>
+          <td><button type="submit" class="btn btn-danger" (click)="attendance($event,doc)">Mark attendance</button></td>
+          </tr>
+          
       </tbody>
       </table>
-    </ng-container>-->
+      
+
+    </ng-container>
 
 
 
-<div class="card-columns" *ngIf="dataofsignedinusers.length">
+
+
+<ng-container *ngIf="displaydetails==1" id="content">
+
+ <div style="text-align:center"><div style="font-weight: bold;">{{userattendance.EmpNo}}</div><pre>     <div>{{userattendance.Name}}</div></pre></div> <button class="btn btn-default" style="float:right;" (click)="closedetails()">
+          <span class="glyphicon glyphicon-remove"></span> close 
+        </button>
+<table  class="table table-bordered" id="table">
+        
+            <thead>
+                 <tr>
+                 <th>Course</th>
+                 <th>Mark presence</th>
+                 </tr>
+            </thead>
+            <tbody>
+                   
+                    <tr *ngFor ="let detail of userattendance|keyvalue">
+
+                    <td *ngIf='(detail.key!="EmpNo")&&(detail.key!="Name")&&(detail.key!="Joining_Date")&&(detail.key!="Ageing")&&(detail.key!="Head")&&(detail.key!="Supervisor_Name")&&(detail.key!="Location")&&(detail.key!="__v")&&(detail.key!="_id")&&(detail.key!="Password")'>{{detail.key}}</td>
+                    <td *ngIf='(detail.key!="EmpNo")&&(detail.key!="Name")&&(detail.key!="Joining_Date")&&(detail.key!="Ageing")&&(detail.key!="Head")&&(detail.key!="Supervisor_Name")&&(detail.key!="Location")&&(detail.key!="__v")&&(detail.key!="_id")&&(detail.key!="Password")'>
+                       <select class="form-control" (change)="markpresence($event,userattendance,detail.key)" placeholder="detail.value">
+                       <option *ngIf="!detail.value">
+                       -
+                       </option>        
+                       <option *ngIf="detail.value">
+                                 Present
+                                 </option>
+                                 <option *ngIf="!detail.value">
+                                 Present
+                                 </option>
+                                   <option *ngIf="detail.value">
+                       -
+                       </option>  
+
+                          </select>
+                    </td>
+                    </tr>
+                    
+                    
+            </tbody>
+</table>
+</ng-container>
+
+<!--<div class="card-columns" *ngIf="dataofsignedinusers.length">
   <div class="card" *ngFor = "let doc of dataofsignedinusers; let i =index">
     <img class="card-img-top" src="..." alt="Card image cap">
     <div class="card-body">
@@ -89,5 +181,6 @@
     </div>
   </div>
 
-    </div>
+    </div>-->
 
+</div>

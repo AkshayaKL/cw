@@ -11,7 +11,7 @@ import { RouterModule, Routes, Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
 form:FormGroup;
-userexists:boolean;
+userexists:boolean; //A variable to display if the user exists
 
 user:user={
 	name:'',
@@ -20,7 +20,9 @@ user:user={
 	phone:'',
   password:'',
   confirmpassword:''
-}
+}                
+
+//user is a variable of type user (which is a class exported from userinfo.ts)
 
 
   
@@ -31,10 +33,12 @@ user:user={
    }
 
 
-submitlogin(value:any):void{
+submitlogin(value:any):void //Function called when the user clicks on Submit button of login page
+
+{
 
   
-  this.putuser.setUser(this.user)
+  this.putuser.setUser(this.user)  //calling setuser function from the service
    .subscribe(
 
    existence=>this.userexists=existence

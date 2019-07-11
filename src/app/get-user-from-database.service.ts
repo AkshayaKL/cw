@@ -96,6 +96,19 @@ this.http.post('http://127.0.0.1:4000/api/getuser',JSON.stringify(this.NamePassw
 
 
   }
+
+  markpresence(data:any):Observable<any>
+  {
+   const headers = new HttpHeaders()
+                .set('Authorization', 'my-auth-token')
+                .set('Content-type', 'application/json');
+
+  console.log(data);
+   return this.http.post('http://127.0.0.1:4000/api/markpresence',data,{headers:headers,});
+     
+
+       
+  }
  
   constructor(private http:HttpClient, private router:Router) { 
               

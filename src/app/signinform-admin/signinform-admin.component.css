@@ -22,3 +22,9 @@ div.well{
 }
 
 
+.fixed-bottom
+{
+	position:absolute;
+	bottom:0;
+}
+

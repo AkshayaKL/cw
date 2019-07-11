@@ -5,7 +5,8 @@ import {
   ViewChild,
   TemplateRef,
   Input,
-  OnInit
+  OnInit,
+  AfterViewInit
 } from '@angular/core';
 import {
   startOfDay,
@@ -18,7 +19,7 @@ import {
   addHours
 } from 'date-fns';
 import { Subject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import '../flatpickr/dist/flatpickr.css';
 import {EventsService} from '../events.service';
 import {EnrollmentService} from '../enrollment.service';
@@ -95,8 +96,9 @@ export class UserCalendarComponent implements OnInit
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private eventservice:EventsService, private datePipe: DatePipe,private enrollmentservice:EnrollmentService) {
-   
+  constructor(private modal: NgbModal, private eventservice:EventsService, config: NgbModalConfig, private datePipe: DatePipe,private enrollmentservice:EnrollmentService) {
+   config.backdrop = 'static';
+    config.keyboard = false;
    this.eventlist = this.eventservice.getevents().subscribe(data=>
    {this.eventlist=this.eventservice.events;
    console.log(this.eventlist);
@@ -189,9 +191,9 @@ export class UserCalendarComponent implements OnInit
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-   alert("Handling event");
+     this.modal.open(this.modalContent, { size: 'lg' });
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+   
   }
 
 enroll(event, course:any)
@@ -232,6 +234,8 @@ enroll(event, course:any)
   }
 
   }
+
+
   @Input()userdetails1:any;
 
 

@@ -18,7 +18,7 @@ export class UploadPostersComponent implements OnInit {
  
   OnFileChange(event) { // called each time file input changes
 
-  alert("File changed");
+   
     if (event.target.files && event.target.files[0]) {
       const file= event.target.files[0];
       console.log(file);

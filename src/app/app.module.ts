@@ -32,7 +32,10 @@ const appRoutes : Routes = [
 {path: 'login', component:LoginPageComponent},
 {path:'',component: DefaultPageComponent},
 {path:'user', component: UserpageComponent },
-{path:'admin', component: AdminpageComponent},
+{path:'admin', component: AdminpageComponent,
+ children:[{path:'calendar', component: CalendarComponent}]
+
+},
 {path:'calendar', component:CalendarComponent},
 {path:'uploadimage', component:UploadPostersComponent}
 ];

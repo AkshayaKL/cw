@@ -7,3 +7,22 @@
 {
 	 display:block;
 }
+
+
+.poster-display
+{
+	 text-align:center;
+	
+}
+
+.poster
+{
+	 width:400px;
+	 max-height: 400px
+}
+
+.inputimage
+{
+	border-radius: 5px;
+	
+}

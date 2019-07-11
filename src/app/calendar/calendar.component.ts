@@ -24,7 +24,7 @@ import {
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView
-} from 'angular-calendar';
+} from 'angular-calendar';   //importing calendar elements
 import {DatePipe} from '@angular/common';
 const colors: any = {
   red: {
@@ -42,7 +42,7 @@ const colors: any = {
 };
 
 @Component({
-  selector: 'mwl-demo-component',
+  selector: 'calendar',
   /* changeDetection: ChangeDetectionStrategy.OnPush,*/
   styleUrls: ['./calendar.component.css'],
   templateUrl: './calendar.component.html'
@@ -50,19 +50,19 @@ const colors: any = {
 export class CalendarComponent {
   @ViewChild('modalContent', { static: true }) modalContent: any;
   
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Month; //Defining the view of the component
 
   CalendarView = CalendarView;
-  events: CalendarEvent[]=[];
+  events: CalendarEvent[]=[]; //Initialising an empty array to store the events(in this case, trainings)
 
   viewDate: Date = new Date();
 
   modalData: {
     action: string;
-    event: CalendarEvent;
+    event: CalendarEvent;  //Modal to display when the event is clicked
   };
 
-  actions: CalendarEventAction[] = [
+  actions: CalendarEventAction[] = [              //Actions array that store the activities done by the calendar
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent }): void => {
@@ -79,82 +79,107 @@ export class CalendarComponent {
   ];
 
   refresh: Subject<any> = new Subject();
-  eventlist:any;
+  eventlist:any;  //A variable to get the trainings from the database
  
 
   
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private eventservice:EventsService, private datePipe: DatePipe) {
-   
-   this.eventlist = this.eventservice.getevents().subscribe(data=>
-   {this.eventlist=this.eventservice.events;
-   console.log(this.eventlist);
-    
-    this.eventlist.forEach(element=>{
-    /*element.start=this.datePipe.transform(element.start,"yyyy,MM,dd");
-    element.end = this.datePipe.transform(element.end,"yyyy,MM,dd");*/
-    if(typeof(element.color ) === "string")
+
+
+//
+
+
+  constructor(private modal: NgbModal, private eventservice:EventsService, private datePipe: DatePipe)
+
      {
-        element.color = colors[element.color];
-     }
-    console.log(element);
+   
+           this.eventlist = this.eventservice.getevents().subscribe(data=>
+                                         {this.eventlist=this.eventservice.events;  //getting the event list from the service 
+
+            //Traversing through each element gotten through the service
+
+                                          this.eventlist.forEach(element=>{
+  
+                                               if(typeof(element.color ) === "string")
+                                                           
+
+                                                       {
+                                                        element.color = colors[element.color];  //this-not necessary
+                                                            
+                                                        }
+   
 
 
-      if(this.events.length)
-     { this.events = [
-      ...this.events,
-      {
-        title: element.title,
-        start: new Date(element.start),
-        end: new Date(element.end),
-        color: element.color,
-        draggable: element.draggable,
-        resizable: {
-          beforeStart: element.resizable["beforeStart"],
-          afterEnd: element.resizable["afterEnd"]
-        }
-      }
-    ];}
-    else
-       {
-         this.events = [{
-                     title: element.title,
-        start: new Date(element.start),
-        end: new Date(element.end),
-        color: element.color,
-        draggable: element.draggable,
-        resizable: {
-          beforeStart: element.resizable["beforeStart"],
-          afterEnd: element.resizable["afterEnd"]
-         }}]
-       }
+                                                  if(this.events.length) // checking if the events is not empty
+                                                         { this.events = [
+                                                                          ...this.events,
+                                                                 {
+                                                                   title: element.title,
+                                                                   start: new Date(element.start),
+                                                                   end: new Date(element.end),
+                                                                   color: element.color,
+                                                                   draggable: element.draggable,
+                                                                   resizable: {
+                                                                               beforeStart: element.resizable["beforeStart"],
+                                                                               afterEnd: element.resizable["afterEnd"]
+                                                                               }
+                                                                              }
+                                                                                ];
+                                                        }
+                                                   else   //Initialising events with the first element if it's empty 
+                                                      {
+                                                          this.events = [{
+                                                                          title: element.title,
+                                                                          start: new Date(element.start),
+                                                                          end: new Date(element.end),
+                                                                          color: element.color,
+                                                                          draggable: element.draggable,
+                                                                          resizable: {
+                                                                                
+                                                                                beforeStart: element.resizable["beforeStart"],
+                                                                                afterEnd: element.resizable["afterEnd"]
+                                                                          }}]
+                                                        }
 
-    })
+                                                                    })
 
 
 
 
-   }
+                                              }
 
    )
    
-  }
+  }        
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      this.viewDate = date;
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
+//constructor ends here 
+
+
+
+//Function to control what happens if a day is clicked on the calendar
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
+       {
+                        if (isSameMonth(date, this.viewDate)) 
+                        {
+                              this.viewDate = date;
+                         if (
+                               (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+                                events.length === 0
+                            )
+                             {
+                                 this.activeDayIsOpen = false;
+                             }
+                         else 
+                         {
+                               this.activeDayIsOpen = true;
+                          }
+                         }
       }
-    }
-  }
+
+
 
 
  eventsareset():void
@@ -168,34 +193,46 @@ export class CalendarComponent {
 
 
 
-
+//Function to call when the user changes the timing of the event
   eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map(iEvent => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd
-        };
-      }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
-  }
+                         event,
+                         newStart,
+                         newEnd
+                      }: CalendarEventTimesChangedEvent): void {
+                                       this.events = this.events.map(iEvent => {
+                                                  if (iEvent === event) {
+                                                                   return {
+                                                                            ...event,
+                                                                             start: newStart,
+                                                                             end: newEnd
+                                                                           };
+                                                                        }
+                                                                       return iEvent;
+                                                                                  });
+                                        this.handleEvent('Dropped or resized', event);
+                                                               }
 
-  handleEvent(action: string, event: CalendarEvent): void {
-    alert("Handling event");
+
+
+
+
+//Function to open modal when an event happens
+
+ handleEvent(action: string, event: CalendarEvent): void
+  {
+    
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
+ 
+
+ //Function when the user clicks on add event
   addEvent(): void {
   if(!this.events)
-    {this.events.push({
+    {
+
+       this.events.push({
 
         title: 'New event',
         start: startOfDay(new Date()),
@@ -208,6 +245,7 @@ export class CalendarComponent {
         }
     })
   }
+
    else
    { this.events = [
       ...this.events,
@@ -227,12 +265,14 @@ export class CalendarComponent {
 
 
   }
-
-  deleteEvent(eventToDelete: CalendarEvent) {
+ //when user deletes an event
+  deleteEvent(eventToDelete: CalendarEvent)
+   {
     this.events = this.events.filter(event => event !== eventToDelete);
   }
 
-  setView(view: CalendarView) {
+  setView(view: CalendarView)
+   {
     this.view = view;
   }
 
